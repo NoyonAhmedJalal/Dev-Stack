@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+
 import type { Itechnologies } from './type/technologiesType';
 import { toast } from 'react-toastify';
 
