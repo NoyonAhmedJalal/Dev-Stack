@@ -32,7 +32,7 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
     }
   };
 
-  // ১টি নির্দিষ্ট আইটেম মুছে
+
   const handleRemoveFromStack = (item: Itechnologies) => {
     const updatedStack = selectedStack.filter((tech) => tech.id !== item.id);
     setSelectedStack(updatedStack);
