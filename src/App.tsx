@@ -4,6 +4,8 @@ import Footer from "./component/Footer";
 import Nav from "./component/Nav"
 import Technologies from "./component/Technologies"
 import type { Itechnologies } from "./component/type/technologiesType";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const technologiesFetch = async ():Promise<Itechnologies[]>=> {
 
@@ -24,6 +26,7 @@ function App() {
         <Technologies technologiesPromise = {technologiesPromise} />
       </Suspense>
         <Footer />
+        <ToastContainer position="top-right" autoClose={2000} />
       </>
       )
 }

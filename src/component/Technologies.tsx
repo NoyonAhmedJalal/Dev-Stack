@@ -1,11 +1,11 @@
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import type { Itechnologies } from './type/technologiesType';
-
+import { toast } from 'react-toastify';
 interface technologiesProps {
   technologiesPromise: Promise<Itechnologies[]>
 }
 
-const badgeColorMap: Record<string, string> = {
+const badgeColor: Record<string, string> = {
   Popular: 'bg-blue-100 text-blue-600 border-blue-200',
   Versatile: 'bg-emerald-100 text-emerald-600 border-emerald-200',
   Fast: 'bg-orange-100 text-orange-600 border-orange-200',
@@ -18,7 +18,19 @@ const badgeColorMap: Record<string, string> = {
 const Technologies = ({ technologiesPromise }: technologiesProps) => {
 
   const techno = use(technologiesPromise);
-  console.log(techno);
+
+  const [selectedStack, setSelectedStack] = useState<Itechnologies[]>([]);
+
+  const handleAddToStack = (item: Itechnologies) => {
+    const isExist = selectedStack.find((tech) => tech.id === item.id);
+
+    if (!isExist) {
+      setSelectedStack([...selectedStack, item]);
+      toast.success(`${item.name} added to your stack!`);
+    } else {
+      toast.warning(`${item.name} is already in your stack!`);
+    }
+  };
 
 
 
@@ -38,6 +50,7 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
 
           {
             techno.map((items) => {
+              const isAdded = selectedStack.some((tech) => tech.id === items.id);
               return (
                 <div key={items.id} className="card  w-96 shadow-amber-200 border-none">
 
@@ -46,14 +59,14 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
 
                     {items.badge ? (
                       <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full border h-fit ${badgeColorMap[items.badge] || 'bg-gray-100 text-gray-600 border-gray-200'
+                        className={`px-3 py-1 text-xs font-semibold rounded-[5px] border-none h-fit ${badgeColor[items.badge] || 'bg-gray-100 text-gray-600 border-gray-200'
                           }`} >
                         {items.badge}
                       </span>
                     ) : (
                       <div></div>
                     )}
-                    
+
                   </figure>
                   <div className="card-body">
                     <h2 className="card-title">{items.name}</h2>
@@ -66,9 +79,13 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
                         <span>{items.rating}</span>
                       </div>
                     </div>
-                    <div className=" card-actions justify-center py-5">
-                      <button className="btn btn-neutral w-full">Add to Stack</button>
-                    </div>
+                    <button
+                      onClick={() => handleAddToStack(items)}
+                      disabled={isAdded}
+                      className={`btn w-full ${isAdded ? 'btn-disabled' : 'btn-neutral'}`}
+                    >
+                      {isAdded ? '✓ Added to Stack' : 'Add to Stack'}
+                    </button>
                   </div>
                 </div>
               )
@@ -79,17 +96,40 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
 
 
 
-        <div className=' col-span-3'>
-          <div className="card bg-primary text-primary-content w-96">
-            <div className="card-body">
-              <h2 className="card-title text-2xl">Your Stack</h2>
-              <p className='font-semibold my-2'>No technologies selected yet.</p>
-              <div className="card-actions justify-center border">
-                <p className=' text-center font-semibold p-10'>Your stack is empty.</p>
+        <div className='col-span-3'>
+  <div className="card bg-base-100 border border-gray-200 shadow-sm w-full sticky top-5 p-5 rounded-2xl">
+    <div className="card-body p-0">
+      <h2 className="card-title text-2xl font-bold text-gray-800">Your Stack</h2>
+      
+      
+      <p className='font-semibold text-gray-500 my-1 text-sm'>
+        {selectedStack.length === 0 
+          ? 'No technologies selected yet.' 
+          : `${selectedStack.length} Technology Selected`}
+      </p>
+
+      {selectedStack.length === 0 ? (
+        <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 mt-3 text-center">
+          <p className='text-gray-400 font-medium'>Your stack is empty.</p>
+        </div>
+      ) : ( <div className="flex flex-col gap-3 mt-3">
+          {selectedStack.map((item) => (
+            <div key={item.id} className="flex items-center justify-between border border-gray-200 p-3 rounded-xl bg-white">
+              <div className="flex items-center gap-3">
+                <img className="w-7 h-7 object-contain" src={item.icon} alt={item.name} />
+                <div>
+                  <h4 className="font-bold text-sm text-gray-800">{item.name}</h4>
+                  <p className="text-[11px] text-gray-500">{item.category}</p>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
+      )}
+
+    </div>
+  </div>
+</div>
 
       </div>
 
