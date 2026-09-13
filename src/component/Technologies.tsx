@@ -32,13 +32,11 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
     }
   };
 
-
   const handleRemoveFromStack = (item: Itechnologies) => {
     const updatedStack = selectedStack.filter((tech) => tech.id !== item.id);
     setSelectedStack(updatedStack);
     toast.error(`${item.name} removed from your stack.`);
   };
-
 
   const handleRemoveAll = () => {
     setSelectedStack([]);
@@ -46,52 +44,67 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
   };
 
   return (
-    <section className="container mx-auto">
-      <div className="mb-15">
-        <h1 className="text-4xl font-bold">
+    <section className="container mx-auto px-4 py-6">
+      <div className="mb-8 text-center sm:text-left">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           Explore the{' '}
           <span className="bg-linear-to-r from-[#E12885] to-[#C832D0] bg-clip-text text-transparent">
             Technologies
           </span>
         </h1>
-        <p className="">Pick one technology per category to build your ideal stack.</p>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">
+          Pick one technology per category to build your ideal stack.
+        </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-20">
-        <div className="col-span-9 grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
           {techno.map((items) => {
             const isAdded = selectedStack.some((tech) => tech.id === items.id);
             return (
-              <div key={items.id} className="card w-96 shadow-amber-200 border-none">
-                <figure className="flex justify-between p-4">
-                  <img className="h-15 mt-3" src={items.icon} alt={items.name} />
+              <div
+                key={items.id}
+                className={`card w-full bg-base-100 shadow-sm rounded-2xl flex flex-col justify-between transition-all ${
+                  isAdded ? 'border-2 border-emerald-500' : 'border border-gray-100'
+                }`}
+              >
+                <div>
+                  <figure className="flex justify-between items-start p-4">
+                    <img className="h-12 w-12 object-contain" src={items.icon} alt={items.name} />
 
-                  {items.badge ? (
-                    <span
-                      className={`px-3 py-1 text-xs font-semibold rounded-[5px] border-none h-fit ${badgeColor[items.badge] || 'bg-gray-100 text-gray-600 border-gray-200'
+                    {items.badge ? (
+                      <span
+                        className={`px-2.5 py-1 text-xs font-semibold rounded-md border ${
+                          badgeColor[items.badge] || 'bg-gray-100 text-gray-600 border-gray-200'
                         }`}
-                    >
-                      {items.badge}
-                    </span>
-                  ) : (
-                    <div></div>
-                  )}
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">{items.name}</h2>
-                  <p>{items.description}</p>
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold">{items.category}</p>
-                    <p className="font-semibold">{items.difficulty}</p>
-                    <div className="flex items-center gap-1 font-bold text-gray-800">
-                      <span className="mask mask-star-2 bg-amber-400 w-4 h-4 inline-block"></span>
-                      <span>{items.rating}</span>
+                      >
+                        {items.badge}
+                      </span>
+                    ) : (
+                      <div></div>
+                    )}
+                  </figure>
+                  <div className="card-body p-4 pt-0">
+                    <h2 className="card-title text-lg">{items.name}</h2>
+                    <p className="text-sm text-gray-500 min-h-10">{items.description}</p>
+                    <div className="flex items-center justify-between text-xs mt-3">
+                      <p className="font-semibold text-gray-600">{items.category}</p>
+                      <p className="font-semibold text-gray-500">{items.difficulty}</p>
+                      <div className="flex items-center gap-1 font-bold text-gray-800">
+                        <span className="mask mask-star-2 bg-amber-400 w-3.5 h-3.5 inline-block"></span>
+                        <span>{items.rating}</span>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <div className="p-4 pt-0">
                   <button
                     onClick={() => handleAddToStack(items)}
                     disabled={isAdded}
-                    className={`btn w-full ${isAdded ? 'btn-disabled' : 'btn-neutral'}`}
+                    className={`btn w-full rounded-xl ${
+                      isAdded ? 'btn-disabled bg-gray-200 text-gray-500' : 'btn-neutral'
+                    }`}
                   >
                     {isAdded ? '✓ Added to Stack' : 'Add to Stack'}
                   </button>
@@ -101,27 +114,27 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
           })}
         </div>
 
-        <div className="col-span-3">
+        <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-3">
           <div className="card bg-base-100 border border-gray-200 shadow-sm w-full sticky top-5 p-5 rounded-2xl">
             <div className="card-body p-0">
-              <h2 className="card-title text-2xl font-bold text-gray-800">Your Stack</h2>
+              <h2 className="card-title text-xl sm:text-2xl font-bold text-gray-800">Your Stack</h2>
 
-              <p className="font-semibold text-gray-500 my-1 text-sm">
+              <p className="font-semibold text-gray-500 my-1 text-xs sm:text-sm">
                 {selectedStack.length === 0
                   ? 'No technologies selected yet.'
                   : `${selectedStack.length} Technology Selected`}
               </p>
 
               {selectedStack.length === 0 ? (
-                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 mt-3 text-center">
-                  <p className="text-gray-400 font-medium">Your stack is empty.</p>
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 sm:p-8 mt-3 text-center">
+                  <p className="text-gray-400 font-medium text-sm">Your stack is empty.</p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-3 mt-3">
+                <div className="flex flex-col gap-3 mt-3 max-h-[60vh] overflow-y-auto pr-1">
                   {selectedStack.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between border border-gray-200 p-3 rounded-xl bg-white"
+                      className="flex items-center justify-between border border-gray-200 p-3 rounded-xl bg-white shadow-xs"
                     >
                       <div className="flex items-center gap-3">
                         <img className="w-7 h-7 object-contain" src={item.icon} alt={item.name} />
@@ -131,7 +144,10 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
                         </div>
                       </div>
 
-                      <button onClick={() => handleRemoveFromStack(item)} className="btn btn-ghost btn-xs btn-circle text-gray-400 hover:text-error">
+                      <button
+                        onClick={() => handleRemoveFromStack(item)}
+                        className="btn btn-ghost btn-xs btn-circle text-gray-400 hover:text-error"
+                      >
                         ✕
                       </button>
                     </div>
@@ -139,7 +155,8 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
 
                   <button
                     onClick={handleRemoveAll}
-                    className="btn btn-outline btn-error w-full mt-2 rounded-xl">
+                    className="btn btn-outline btn-error w-full mt-2 rounded-xl"
+                  >
                     Remove All
                   </button>
                 </div>
