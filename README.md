@@ -1,75 +1,50 @@
-# React + TypeScript + Vite
+Dev Stack
+Dev Stack is a modern web application designed for developers to explore, compare, and curate their ideal software development stacks. Users can filter through various frontend, backend, database, and tooling options to assemble the best tech combination for their upcoming projects.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Technologies Used
+React
 
-Currently, two official plugins are available:
+TypeScript
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Tailwind CSS
 
-## React Compiler
+Vite
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Key Features
+Interactive filterable grid to browse technologies by domain and category.
 
-## Expanding the ESLint configuration
+Dynamic selection system allowing users to build and preview their custom tech stack in real time.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Fully responsive navigation layout with fixed header controls and mobile drawer support.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+I. What is JSX, and why is it used in React?
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+JSX is HTML-like code inside JavaScript. It makes writing React UI templates faster and easier to read.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+II. What is the difference between props and state?
 
-```
+Props are read-only data passed from a parent. State is component data that changes and triggers a re-render.
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+III. What does the useState hook do, and where did you use it in this project?
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+useState stores and updates local component data. It is used in the Nav component to toggle the mobile menu.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+IV. What does the useEffect hook do, and why did you need it to load the JSON data?
 
-```
+useEffect handles side effects. It fetches the JSON data once after the component mounts without freezing the UI.
+
+V. Why does every item in a .map() list need a unique key prop?
+
+Keys help React track list items efficiently so it updates only the changed elements in the DOM.
+
+VI. What is conditional rendering? Show one place you used it.
+
+Conditional rendering shows UI only when a condition is met. Example:
+
+{isOpen && <MobileMenu/>}
+
+VII. How do you pass data from a parent to a child, and back from a child to a parent?
+
+Parent to Child: Passed via props.
+
+Child to Parent: The parent passes a callback function as a prop, which the child triggers with data.
