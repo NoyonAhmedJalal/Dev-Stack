@@ -39,7 +39,7 @@ const Technologies = ({ technologiesPromise }: technologiesProps) => {
     toast.error(`${item.name} removed from your stack.`);
   };
 
-  // 
+
   const handleRemoveAll = () => {
     setSelectedStack([]);
     toast.info('All technologies removed from stack.');
